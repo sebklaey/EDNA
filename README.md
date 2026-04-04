@@ -2,6 +2,8 @@
 
 EDNA-1 (Enhanced Detection & Neural Analysis) is a lightweight, client-side "Human-Proof" verification engine. Instead of intrusive CAPTCHAs, EDNA-1 analyzes the **physical texture of human interaction** to distinguish between real users and automated bots.
 
+🎮 Live Demo: Check it out here -> https://claude.ai/public/artifacts/74af0308-e2b3-4bd7-af54-3f5fb106c687
+
 ## 🚀 Key Features
 
 EDNA-1 monitors over 15 unique behavioral signals in real-time:
@@ -34,6 +36,3 @@ window.addEventListener('keydown', (e) => edna.recordKey(e));
 const results = edna.analyze();
 console.log(`Confidence: ${results.confidence * 100}%`);
 console.log(`Classification: ${results.classification}`);
-
-
-🎮 Live Demo: Check it out here -> https://claude.ai/public/artifacts/74af0308-e2b3-4bd7-af54-3f5fb106c687
