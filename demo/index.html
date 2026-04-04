@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EDNA-1 Human Proof Demo</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; }
+    body {
+      background: #08080D;
+      color: #E5E5E5;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+    }
+    h1 { color: #D4A843; font-size: 32px; margin-bottom: 8px; }
+    .subtitle { color: #666; font-size: 14px; margin-bottom: 40px; }
+    .vault { position: relative; width: 240px; height: 240px; margin-bottom: 32px; }
+    .status { text-align: center; margin-bottom: 32px; }
+    .status .label { font-size: 12px; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 6px; }
+    .status .meta { font-size: 11px; color: #444; }
+    .interact-area {
+      width: 100%; max-width: 400px;
+      margin-bottom: 24px;
+    }
+    textarea {
+      width: 100%; height: 60px; background: rgba(212,168,67,0.03);
+      border: 1px solid rgba(212,168,67,0.1); border-radius: 8px;
+      color: #B8A888; font-family: inherit; font-size: 14px;
+      padding: 14px 16px; resize: none; outline: none;
+    }
+    textarea::placeholder { color: rgba(212,168,67,0.2); }
+    .signals { width: 100%; max-width: 400px; margin-bottom: 24px; }
+    .signals h3 {
+      font-size: 10px; letter-spacing: 3px; color: #4A4030;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .signal-row {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+    }
+    .signal-name { flex: 0 0 140px; font-size: 11px; color: #666; }
+    .signal-bar {
+      flex: 1; height: 3px; background: rgba(255,255,255,0.04);
+      border-radius: 2px; overflow: hidden;
+    }
+    .signal-fill { height: 100%; border-radius: 2px; transition: width 1s ease-out; }
+    .signal-val { flex: 0 0 28px; font-size: 10px; text-align: right; }
+    .seal-container { margin-top: 24px; }
+    .scroll-content {
+      max-width: 400px; margin-top: 32px; padding: 20px;
+      border-top: 1px solid rgba(212,168,67,0.08);
+    }
+    .scroll-content p {
+      font-size: 13px; color: #444; line-height: 1.8;
+      margin-bottom: 16px; font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Human Proof Vault</h1>
+  <p class="subtitle">Only a human can open this vault. Interact naturally.</p>
+
+  <div class="vault">
+    <svg id="vault-svg" viewBox="0 0 240 240" width="240" height="240">
+      <circle cx="120" cy="120" r="110" fill="none" stroke="rgba(212,168,67,0.08)" stroke-width="2.5"/>
+      <circle id="vault-ring" cx="120" cy="120" r="110" fill="none"
+        stroke="#D4A843" stroke-width="2.5" stroke-linecap="round"
+        stroke-dasharray="691.15" stroke-dashoffset="691.15"
+        transform="rotate(-90 120 120)"
+        style="transition: stroke-dashoffset 1s ease-out, stroke 0.6s"/>
+      <rect x="62" y="62" width="116" height="116" rx="10" fill="#0E0E16"
+        stroke="rgba(212,168,67,0.2)" stroke-width="1.5" id="vault-box"/>
+      <g id="vault-locked">
+        <rect x="106" y="100" width="28" height="22" rx="3" fill="none" stroke="#8B6914" stroke-width="1.5"/>
+        <path d="M111 100V93a9 9 0 0118 0v7" fill="none" stroke="#8B6914" stroke-width="1.5"/>
+        <circle cx="120" cy="111" r="2.5" fill="#D4A843"/>
+        <text id="vault-pct" x="120" y="152" text-anchor="middle"
+          style="font-size:20px;fill:#D4A843;font-weight:700">0%</text>
+      </g>
+      <g id="vault-open" style="display:none">
+        <text x="120" y="112" text-anchor="middle" style="font-size:32px;fill:#4ADE80">✦</text>
+        <text x="120" y="140" text-anchor="middle"
+          style="font-size:11px;fill:#4ADE80;letter-spacing:4px;font-weight:600">VERIFIED</text>
+        <text x="120" y="158" text-anchor="middle"
+          style="font-size:10px;fill:rgba(74,222,128,0.4);letter-spacing:3px">HUMAN</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="status">
+    <div class="label" id="class-label">SCANNING</div>
+    <div class="meta" id="meta-label">0 events · 0s · 0 signals</div>
+  </div>
+
+  <div class="interact-area">
+    <textarea placeholder="Type something — every keystroke counts..."></textarea>
+  </div>
+
+  <div class="signals" id="signals-panel"></div>
+
+  <div class="seal-container" id="seal"></div>
+
+  <div class="scroll-content">
+    <p>EDNA-1 analyzes your touch behavior, scroll patterns, typing rhythm, and device sensors in real-time.</p>
+    <p>Humans produce naturally varied timing, imperfect movements, and reading pauses. Bots don't.</p>
+    <p>16 behavioral signals are combined into a single confidence score. When 75% of signals confirm human-like behavior, the vault opens.</p>
+    <p>No name. No email. No phone number. Just behavior. That is Human Proof.</p>
+    <p>The way you scroll through this text right now is generating data. Fast scroll means you're skimming. Slow scroll means you're reading. Scroll back up means something caught your eye.</p>
+    <p>Every pause tells a story. Every correction reveals a thinking process. Every tap leaves a behavioral fingerprint.</p>
+    <p>This is not surveillance. No content is recorded. No identity is stored. Only the statistical shape of your behavior — the rhythm, the tempo, the hesitations — is analyzed.</p>
+    <p>A bot can simulate clicks. A bot can generate text. But a bot cannot simulate doubt. And doubt is the most human thing there is.</p>
+    <p style="color:#D4A843; font-style:normal; text-align:center; margin-top:32px;">
+      Human Proof Protocol by Sebastian Kläy · @sebklaey<br>
+      <span style="font-size:11px; color:#444;">EAL-1.0 License · Open Source · github.com/sebklaey/EDNA</span>
+    </p>
+  </div>
+
+  <script src="../src/edna.js"></script>
+  <script>
+    var edna = new EDNA();
+    edna.observe(document);
+    edna.showSeal("#seal", { size: 48 });
+
+    var C = 2 * Math.PI * 110;
+    var ring = document.getElementById("vault-ring");
+    var pctEl = document.getElementById("vault-pct");
+    var classLabel = document.getElementById("class-label");
+    var metaLabel = document.getElementById("meta-label");
+    var lockedG = document.getElementById("vault-locked");
+    var openG = document.getElementById("vault-open");
+    var vaultBox = document.getElementById("vault-box");
+    var signalsPanel = document.getElementById("signals-panel");
+    var opened = false;
+
+    var classMap = {
+      gathering_data: { t: "SCANNING", c: "#504838" },
+      human_verified: { t: "HUMAN VERIFIED ✦", c: "#4ADE80" },
+      likely_human: { t: "LIKELY HUMAN", c: "#D4A843" },
+      uncertain: { t: "ANALYZING", c: "#D97706" },
+      likely_bot: { t: "SUSPICIOUS", c: "#EF4444" },
+      bot: { t: "BOT DETECTED", c: "#EF4444" }
+    };
+
+    setInterval(function () {
+      var r = edna.getHumanProof();
+      var pct = Math.round(r.confidence * 100);
+
+      ring.setAttribute("stroke-dashoffset", C * (1 - r.confidence));
+      pctEl.textContent = pct + "%";
+
+      var cl = classMap[r.classification] || classMap.gathering_data;
+      classLabel.textContent = cl.t;
+      classLabel.style.color = cl.c;
+      metaLabel.textContent = r.eventCount + " events · " + Math.floor(r.elapsed) + "s · " + (r.signalCount || Object.keys(r.signals).length) + " signals";
+
+      if (r.confidence >= 0.99 && !opened) {
+        opened = true;
+        lockedG.style.display = "none";
+        openG.style.display = "";
+        ring.setAttribute("stroke", "#4ADE80");
+        vaultBox.setAttribute("stroke", "rgba(74,222,128,0.5)");
+      }
+
+      // Render signals
+      var keys = Object.keys(r.signals);
+      if (keys.length > 0) {
+        var html = '<h3>Live Signal Analysis</h3>';
+        for (var i = 0; i < keys.length; i++) {
+          var v = r.signals[keys[i]];
+          var pctV = Math.round(v * 100);
+          var color = v > 0.7 ? "#4ADE80" : v > 0.4 ? "#D4A843" : "#EF4444";
+          html += '<div class="signal-row">' +
+            '<div class="signal-name">' + keys[i] + '</div>' +
+            '<div class="signal-bar"><div class="signal-fill" style="width:' + pctV + '%;background:' + color + '"></div></div>' +
+            '<div class="signal-val" style="color:' + color + '">' + pctV + '</div>' +
+            '</div>';
+        }
+        signalsPanel.innerHTML = html;
+      }
+    }, 600);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+{
+  "name": "edna-standard",
+  "version": "1.0.0",
+  "description": "EDNA-1 Human Proof Protocol — Behavioral biometrics that prove you're human. No CAPTCHAs, no KYC, no personal data.",
+  "main": "src/edna.js",
+  "files": [
+    "src/edna.js",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Tests coming soon\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sebklaey/EDNA.git"
+  },
+  "keywords": [
+    "human-proof",
+    "bot-detection",
+    "captcha-alternative",
+    "behavioral-biometrics",
+    "edna",
+    "human-verification",
+    "sybil-detection",
+    "web3",
+    "identity",
+    "keystroke-dynamics"
+  ],
+  "author": "Sebastian Kläy <@sebklaey> (https://sebklaey.app)",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/sebklaey/EDNA/issues"
+  },
+  "homepage": "https://github.com/sebklaey/EDNA#readme"
+}
