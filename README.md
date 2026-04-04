@@ -34,3 +34,6 @@ window.addEventListener('keydown', (e) => edna.recordKey(e));
 const results = edna.analyze();
 console.log(`Confidence: ${results.confidence * 100}%`);
 console.log(`Classification: ${results.classification}`);
+
+
+🎮 Live Demo: Check it out here -> https://claude.ai/public/artifacts/74af0308-e2b3-4bd7-af54-3f5fb106c687
