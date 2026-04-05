@@ -1,93 +1,23 @@
-EDNA-1 Attribution License (EAL-1.0)
+EDNA-1 Commercial & Proprietary License (ECP-1.0)
 Version 1.0, April 2026
-
 Copyright (c) 2026 Sebastian Kläy (@sebklaey)
-https://sebklaey.app | https://livingecho.eth.limo
-
-TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-1. Definitions.
-
-   "Software" means the EDNA-1 source code, documentation, and any
-   associated files made available under this License.
-
-   "Derivative Work" means any work that is based on or incorporates
-   the Software, in whole or in part, whether modified or unmodified.
-
-   "End User Interface" means any visual interface, screen, page, or
-   display presented to end users of a product or service.
-
-   "Seal" means the EDNA-1 Human Proof attribution element, which must
-   display: "Human Proof by @sebklaey standard" together with the
-   EDNA-1 loading ring indicator.
-
-2. Grant of License.
-
-   Subject to the terms of this License, the copyright holder hereby
-   grants You a perpetual, worldwide, non-exclusive, royalty-free license
-   to use, copy, modify, merge, publish, distribute, sublicense, and/or
-   sell copies of the Software, and to permit persons to whom the Software
-   is furnished to do so, subject to the conditions below.
-
-3. Mandatory Visible Attribution.
-
-   Any product, service, application, or website that uses the Software
-   or any Derivative Work MUST display the Seal in the End User Interface,
-   subject to the following requirements:
-
-   (a) The Seal must be visible to end users without requiring any user
-       action such as clicking, scrolling, opening menus, or navigating
-       to a separate page.
-
-   (b) The Seal must contain the text "Human Proof by @sebklaey standard"
-       and the EDNA-1 loading ring indicator showing the confidence score.
-
-   (c) The Seal must include a hyperlink to the official EDNA-1 repository
-       (https://github.com/sebklaey/EDNA) when displayed in a digital
-       context.
-
-   (d) The Seal may be resized to fit different layouts, but the text,
-       ring indicator, and link must remain intact and legible.
-
-   (e) The Seal may not be obscured, overlapped, made transparent,
-       color-matched to the background to reduce visibility, or otherwise
-       rendered illegible or inconspicuous.
-
-4. Prohibition on Attribution Removal.
-
-   Removal, concealment, or material alteration of the Seal constitutes
-   a violation of this License and immediately and automatically terminates
-   all rights granted herein. Upon termination, You must cease all use
-   and distribution of the Software and any Derivative Works.
-
-5. Source Code Attribution.
-
-   The above copyright notice and this License shall be included in all
-   copies or substantial portions of the Software.
-
-6. Contributions.
-
-   Any contribution intentionally submitted for inclusion in the Software
-   shall be under the terms of this License, without any additional terms.
-
-7. No Trademark License.
-
-   This License does not grant permission to use the trade names,
-   trademarks, service marks, or product names of the Licensor, except
-   as required for the Seal and for reasonable use in describing the
-   origin of the Software.
-
-8. Disclaimer of Warranty.
-
-   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-
-9. Limitation of Liability.
-
-   IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM,
-   DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT
-   OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
-   OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-END OF TERMS AND CONDITIONS
+All Rights Reserved.
+1. OWNERSHIP AND COPYRIGHT
+The EDNA-1 Software, including but not limited to source code, algorithms, behavioral signal logic, and documentation (the "Software"), is the exclusive intellectual property of Sebastian Kläy (the "Licensor"). The Software is protected by international copyright laws and treaties.
+2. LIMITED EVALUATION LICENSE
+The Licensor hereby grants you a personal, non-exclusive, non-transferable, and non-sublicensable right to download and view the source code for evaluation and educational purposes only. This license does NOT grant any rights to:
+(a) Deploy the Software in a production environment.
+(b) Use the Software for any commercial gain or within a corporate entity.
+(c) Modify, merge, or create derivative works for public distribution.
+3. PROHIBITION OF COMMERCIAL USE
+Any use of the Software in a commercial product, service, or internal business process is strictly prohibited without a separate, written Commercial License Agreement signed by the Licensor. This includes, but is not limited to, use in fintech platforms, cryptocurrency exchanges, social media networks, or any system requiring bot detection or sybil resistance.
+4. RESTRICTIONS ON TRANSFER AND SALE
+You may not rent, lease, lend, sell, redistribute, or sublicense the Software to any third party. The right to sell, license, or transfer the underlying technology and intellectual property is reserved exclusively for Sebastian Kläy.
+5. ACQUISITION AND BUY-OUT PROVISION
+The Software and all associated Intellectual Property (IP) are available for acquisition. Any transfer of full ownership (e.g., to Coinbase, Inc.) requires a formal Asset Purchase Agreement. Upon such an agreement, this license may be superseded by the terms of the acquisition.
+6. MANDATORY ATTRIBUTION (NON-COMMERCIAL ONLY)
+If granted specific permission for non-commercial use, the "EDNA-1 Human Proof Seal" must remain visible as per the original design specifications. Removal of the Seal without a commercial waiver constitutes a breach of contract.
+7. TERMINATION
+This license terminates automatically if you fail to comply with any of its terms. Upon termination, you must destroy all copies of the Software in your possession.
+8. NO WARRANTY & LIMITATION OF LIABILITY
+[Standard Disclaimer: THE SOFTWARE IS PROVIDED "AS IS"... (wie in deinem Entwurf)]
