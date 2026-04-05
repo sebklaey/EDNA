@@ -1,0 +1,247 @@
+/**
+ * EDNA — Enhanced Detection & Neural Analysis
+ * Human Proof Protocol · Behavioral Kymatik
+ *
+ * One file. Zero dependencies. Proves you're human.
+ * Behavioral signals → Chladni resonance → unique identity.
+ *
+ * (c) 2026 Sebastian Kläy · @sebklaey
+ * EAL-1.0 License · github.com/sebklaey/EDNA
+ */
+
+(function(root,factory){
+  if(typeof module==="object"&&module.exports)module.exports=factory();
+  else root.EDNA=factory();
+})(typeof self!=="undefined"?self:this,function(){"use strict";
+
+// ═══════════════════════════════════════
+// §1 — BEHAVIORAL ENGINE
+// 16 signals. Client-side. No data leaves.
+// ═══════════════════════════════════════
+
+function Engine(){
+  this._iv=[];this._ma=[];this._ms=[];this._si=[];this._sv=[];
+  this._ta=[];this._td=[];this._tx=[];this._ty=[];this._gy=[];
+  this._sp=[];this._dk=0;this._tk=0;this._bl=[];this._cb=0;this._bt=null;
+  this._sdc=0;this._lsd=null;this._le=null;this._lmx=null;this._lmy=null;
+  this._lmt=null;this._mc=0;this._sc=0;this._t0=Date.now();
+  this._tst=null;this._lsx=null;this._lsy=null;this._sa=false;this._st=null;
+  this._sm=0;this._handlers={};this._target=null;this._observed=false;
+}
+
+var P=Engine.prototype;
+
+P._ts=function(e){
+  var n=Date.now(),t=e.touches&&e.touches[0]||e;
+  if(this._le)this._iv.push(n-this._le);this._le=n;this._tst=n;
+  if(t.radiusX)this._ta.push(t.radiusX*(t.radiusY||t.radiusX));
+  if(t.clientX!=null){this._tx.push(t.clientX/window.innerWidth);this._ty.push(t.clientY/window.innerHeight)}
+};
+P._te=function(){if(this._tst){this._td.push(Date.now()-this._tst);this._tst=null}};
+P._scroll=function(e){
+  var n=Date.now(),d=e.deltaY>0?1:-1;
+  if(this._lsd!==null&&d!==this._lsd)this._sdc++;this._lsd=d;
+  this._sv.push(Math.abs(e.deltaY));
+  if(this._lsx)this._si.push(n-this._lsx);this._lsx=n;this._sc++;
+  if(this._le)this._iv.push(n-this._le);this._le=n;
+  if(!this._sa&&this._lsy)this._sp.push(n-this._lsy);this._sa=true;
+  var self=this;clearTimeout(this._st);
+  this._st=setTimeout(function(){self._sa=false;self._lsy=Date.now()},150);
+};
+P._move=function(e){
+  var n=Date.now(),x=e.clientX!=null?e.clientX:e.touches&&e.touches[0]?e.touches[0].clientX:0,
+    y=e.clientY!=null?e.clientY:e.touches&&e.touches[0]?e.touches[0].clientY:0;
+  if(this._lmx!==null&&this._lmt!==null){
+    var dx=x-this._lmx,dy=y-this._lmy,dt=n-this._lmt;
+    if(dt>0&&(Math.abs(dx)>2||Math.abs(dy)>2)){
+      this._ms.push(Math.sqrt(dx*dx+dy*dy)/dt);
+      this._ma.push(Math.atan2(dy,dx));this._mc++}}
+  this._lmx=x;this._lmy=y;this._lmt=n;
+};
+P._key=function(e){
+  var n=Date.now();if(this._le)this._iv.push(n-this._le);this._le=n;this._tk++;
+  if(e.key==="Backspace"||e.key==="Delete")this._dk++;
+  this._cb++;var self=this;clearTimeout(this._bt);
+  this._bt=setTimeout(function(){if(self._cb>0){self._bl.push(self._cb);self._cb=0}},500);
+};
+P._gyro=function(e){
+  var a=e.accelerationIncludingGravity;
+  if(a&&a.x!=null&&a.y!=null&&a.z!=null)
+    this._gy.push(Math.sqrt(a.x*a.x+a.y*a.y+a.z*a.z));
+};
+
+// — Statistics —
+
+function mean(a){if(!a.length)return 0;for(var s=0,i=0;i<a.length;i++)s+=a[i];return s/a.length}
+function std(a){if(a.length<2)return 0;var m=mean(a),s=0;for(var i=0;i<a.length;i++)s+=(a[i]-m)*(a[i]-m);return Math.sqrt(s/(a.length-1))}
+function cv(a){var m=mean(a);return m?std(a)/m:0}
+function entropy(a){
+  if(a.length<8)return .5;var s=[],i;for(i=0;i<a.length;i++)if(a[i]>0)s.push(a[i]);
+  s.sort(function(a,b){return a-b});if(s.length<8)return .5;
+  var bd=[],bins=10;for(i=1;i<bins;i++)bd.push(s[Math.floor(i*s.length/bins)]);
+  var c=new Array(bins).fill(0);
+  for(i=0;i<s.length;i++){var b=0;for(var j=0;j<bd.length;j++)if(s[i]>bd[j])b=j+1;c[Math.min(b,bins-1)]++}
+  var H=0;for(i=0;i<c.length;i++)if(c[i]>0){var p=c[i]/s.length;H-=p*Math.log(p)/Math.LN2}
+  return H/(Math.log(bins)/Math.LN2);
+}
+function acorr(a){
+  if(a.length<8)return 0;var m=mean(a),n=0,d=0,i;
+  for(i=0;i<a.length-1;i++){n+=(a[i]-m)*(a[i+1]-m);d+=(a[i]-m)*(a[i]-m)}
+  d+=(a[a.length-1]-m)*(a[a.length-1]-m);return d?n/d:0;
+}
+
+// — Signal Scorers —
+
+P._signals=function(){
+  var r={},iv=this._iv,el=(Date.now()-this._t0)/1000,tot=iv.length+this._sc+this._mc;
+  if(iv.length>=10){
+    var p=[],i;for(i=0;i<iv.length;i++)if(iv[i]>0)p.push(iv[i]);
+    if(p.length>=8){var rc=cv(p),lp=[],j;for(j=0;j<p.length;j++)lp.push(Math.log(p[j]));var lc=cv(lp);
+      r.timingDistribution=rc>.25&&lc<rc*.9?Math.min(1,.65+rc*.35):rc<.06?.1:Math.min(1,.45+rc*.3)}
+    var e=entropy(iv);r.timingEntropy=e>=.6?Math.min(1,.6+e*.4):e>=.4?.5+(e-.4)*1.5:e<.3?.15:.4;
+    var ac=acorr(iv);r.autocorrelation=ac>.02&&ac<.7?.6+ac*.55:Math.abs(ac)<.01?.35:.4;
+    if(iv.length>=20){var rc2=iv.slice(-200),t=Math.floor(rc2.length/3),o=mean(rc2);
+      if(o){var d=Math.abs(mean(rc2.slice(0,t))-mean(rc2.slice(-t)))/o;
+        r.naturalDrift=d>.015&&d<.7?Math.min(1,.6+d*.7):.35}}
+  }
+  if(this._ma.length>=10){var df=[],k;for(k=1;k<this._ma.length;k++)df.push(Math.abs(this._ma[k]-this._ma[k-1]));
+    var c2=cv(df);r.pathCurvature=c2>.2&&c2<3.5?Math.min(1,.55+c2*.22):c2<.06?.1:.3}
+  if(this._ms.length>=10){var c3=cv(this._ms),s2=.5;if(c3>.35)s2+=.3;if(c3>.7)s2+=.15;if(c3<.1)s2-=.35;
+    r.speedVariation=Math.max(.05,Math.min(1,s2))}
+  if(this._si.length>=5){var c4=cv(this._si),c5=cv(this._sv),s3=.5;
+    if(c4>.2)s3+=.2;if(c5>.2)s3+=.2;if(this._sdc>0)s3+=.1;if(c4<.06)s3-=.35;
+    r.scrollBehavior=Math.max(.05,Math.min(1,s3))}
+  if(this._gy.length>=10){var c6=cv(this._gy);r.deviceMotion=c6>.004&&c6<3?.95:c6<=.004?.08:.4}
+  if(this._ta.length>=6){var c7=cv(this._ta);r.contactArea=c7>.06?Math.min(1,.6+c7*.8):.15}
+  if(this._td.length>=6){var c8=cv(this._td);r.clickDuration=c8>.3?Math.min(1,.6+c8*.3):c8<.08?.15:.45}
+  if(this._sp.length>=4){var c9=cv(this._sp);r.readingPauses=c9>.25?Math.min(1,.6+c9*.35):c9<.08?.15:.45}
+  if(this._tx.length>=8){var sp2=(cv(this._tx)+cv(this._ty))/2;
+    r.interactionMap=sp2>.15?Math.min(1,.55+sp2*.8):sp2<.05?.15:.4}
+  if(this._ms.length>=8){var sw=[];for(var m=0;m<this._ms.length;m++)if(this._ms[m]>.5)sw.push(this._ms[m]);
+    if(sw.length>=5){var c10=cv(sw);var s4=.5;if(c10>.3)s4+=.25;r.motionCharacter=Math.max(.05,Math.min(1,s4))}}
+  if(this._tk>=25){var ra=this._dk/this._tk;r.corrections=ra>.01&&ra<.5?Math.min(1,.7+ra*.6):.4}
+  if(this._bl.length>=3){var c11=cv(this._bl);r.typingBursts=c11>.12?Math.min(1,.55+c11*.5):.35}
+  if(el>2&&tot>15){var ra2=tot/el;r.eventRate=ra2>.2&&ra2<60?.8:ra2>=60?.08:.4}
+  return r;
+};
+
+// — Confidence —
+
+var W={timingDistribution:2.5,timingEntropy:1.5,autocorrelation:2,naturalDrift:1.5,
+  pathCurvature:2,speedVariation:2,scrollBehavior:2.5,deviceMotion:3,contactArea:2,
+  clickDuration:2,readingPauses:2.5,interactionMap:2,motionCharacter:2,corrections:1.5,
+  typingBursts:1,eventRate:1.5};
+
+P.analyze=function(){
+  var sig=this._signals(),keys=Object.keys(sig),n=keys.length,
+    el=(Date.now()-this._t0)/1000,tot=this._iv.length+this._sc+this._mc;
+  if(n===0)return{confidence:0,classification:"gathering_data",signals:sig,events:tot,elapsed:el,hasGyro:this._gy.length>0};
+  var wS=0,wT=0,bots=0,strong=0,i;
+  for(i=0;i<keys.length;i++){var v=sig[keys[i]],w=W[keys[i]]||1;wS+=Math.max(.3,v)*w;wT+=w;if(v<.15)bots++;if(v>.6)strong++}
+  var raw=wS/wT;if(bots>=3)raw*=.4;else if(bots>=2)raw*=.6;
+  var sr=strong/n;if(bots===0&&n>=6){if(sr>=.75)raw=.999;else if(sr>=.5)raw=raw*.3+.999*.7}
+  raw*=Math.min(1,(n-.5)/5);var tf=Math.min(1,el/40);raw=raw*.55+raw*tf*.45;
+  raw*=(.75+Math.min(1,tot/100)*.25);raw=Math.max(0,Math.min(.999,raw));
+  this._sm+=(raw-this._sm)*(raw>.95?.18:.12);var c=Math.max(0,Math.min(.999,this._sm));
+  var cl="bot";if(c>=.99)cl="human";else if(c>=.8)cl="likely_human";
+  else if(c>=.5)cl="uncertain";else if(c>=.3)cl="likely_bot";
+  return{confidence:c,classification:cl,signals:sig,events:tot,elapsed:el,signalCount:n,hasGyro:this._gy.length>0};
+};
+
+// ═══════════════════════════════════════
+// §2 — CHLADNI RESONANCE
+// Signals → harmonics → nodal pattern → identity.
+// ═══════════════════════════════════════
+
+var SK=["timingDistribution","timingEntropy","autocorrelation","naturalDrift",
+  "pathCurvature","speedVariation","scrollBehavior","deviceMotion","contactArea",
+  "clickDuration","readingPauses","interactionMap","motionCharacter","corrections",
+  "typingBursts","eventRate"];
+
+var BASE=[{n:2,m:3,a:.3,p:0},{n:3,m:5,a:.2,p:.5},{n:1,m:4,a:.25,p:1}];
+
+function harmonics(sig){var h=[],i;for(i=0;i<SK.length;i++)h.push(typeof sig[SK[i]]==="number"?sig[SK[i]]:0);return h}
+function modes(h){var m=[],i,j;for(i=0;i<h.length;i++)for(j=i+1;j<h.length;j++){var a=(h[i]+h[j])/2;
+  if(a>.1)m.push({n:1+h[i]*4.5,m:1+h[j]*4.5,a:a,p:(h[i]-h[j])*Math.PI})}
+  m.sort(function(a,b){return b.a-a.a});return m.slice(0,12)}
+function chladni(M,x,y){var s=0,i;for(i=0;i<M.length;i++){var m=M[i];
+  s+=(Math.cos(m.n*x+m.p)*Math.cos(m.m*y)-Math.cos(m.m*x)*Math.cos(m.n*y+m.p))*m.a}return s}
+function fnv(s){var h=0x811c9dc5,i;for(i=0;i<s.length;i++){h^=s[i];h=Math.imul(h,0x01000193);h=h>>>0}return"edna_"+h.toString(16).padStart(8,"0")}
+function fp(M,r){r=r||16;var s=[],st=Math.PI/r,x,y;for(y=0;y<r;y++)for(x=0;x<r;x++){
+  var v=chladni(M,x*st,y*st);s.push(Math.max(0,Math.min(255,Math.floor((v+1)*127.5))))}return s}
+function sim(a,b){if(a.length!==b.length)return 0;var s=0,i;for(i=0;i<a.length;i++){var d=a[i]-b[i];s+=d*d}return Math.max(0,1-Math.sqrt(s/a.length)/255*3)}
+function forceField(M,res){var fx=new Float32Array(res*res),fy=new Float32Array(res*res),st=Math.PI*2/res,x,y;
+  for(y=0;y<res;y++)for(x=0;x<res;x++){var i=y*res+x,v=chladni(M,x*st,y*st);
+    fx[i]=-(v*(chladni(M,(x+1)*st,y*st)-chladni(M,(x-1)*st,y*st)));
+    fy[i]=-(v*(chladni(M,x*st,(y+1)*st)-chladni(M,x*st,(y-1)*st)))}return{fx:fx,fy:fy,res:res}}
+
+// ═══════════════════════════════════════
+// §3 — PUBLIC API
+// ═══════════════════════════════════════
+
+function EDNA(){this._e=new Engine();this._modes=BASE.slice();this._field=null;this._hash="edna_00000000";this._samples=[];this._si=null;this._fi=null}
+
+EDNA.prototype.observe=function(t){
+  var e=this._e;if(e._observed)return this;e._observed=true;var self=this;
+  var h={mousedown:function(v){e._ts(v)},touchstart:function(v){e._ts(v)},mouseup:function(){e._te()},touchend:function(){e._te()},
+    mousemove:function(v){e._move(v)},touchmove:function(v){e._move(v)},wheel:function(v){e._scroll(v)},keydown:function(v){e._key(v)}};
+  var pa=["touchstart","touchmove","wheel"],ks=Object.keys(h),i;
+  for(i=0;i<ks.length;i++)t.addEventListener(ks[i],h[ks[i]],pa.indexOf(ks[i])>=0?{passive:true}:undefined);
+  var gh=function(v){e._gyro(v)};
+  if(typeof DeviceMotionEvent!=="undefined"&&typeof DeviceMotionEvent.requestPermission==="function"){
+    var rq=function(){DeviceMotionEvent.requestPermission().then(function(s){if(s==="granted")window.addEventListener("devicemotion",gh)}).catch(function(){});
+      t.removeEventListener("click",rq)};t.addEventListener("click",rq);
+  }else window.addEventListener("devicemotion",gh);
+  e._handlers=h;e._handlers._g=gh;e._target=t;
+  this._fi=setInterval(function(){self._update()},500);return this;
+};
+
+EDNA.prototype.destroy=function(){
+  var e=this._e;if(!e._observed)return;var ks=Object.keys(e._handlers),i;
+  for(i=0;i<ks.length;i++){if(ks[i]==="_g")window.removeEventListener("devicemotion",e._handlers._g);
+    else e._target.removeEventListener(ks[i],e._handlers[ks[i]])}
+  e._observed=false;if(this._si)clearInterval(this._si);if(this._fi)clearInterval(this._fi);
+};
+
+EDNA.prototype.getHumanProof=function(){var r=this._e.analyze();r.hash=this._hash;r.samples=this._samples;return r};
+EDNA.prototype.getModes=function(){return this._modes};
+EDNA.prototype.getForceField=function(){return this._field};
+EDNA.prototype.compareTo=function(o){var s=sim(this._samples,o);return{match:s>.85,confidence:s}};
+
+EDNA.prototype._update=function(){
+  var sig=this._e._signals(),h=harmonics(sig),um=modes(h);
+  this._modes=um.length>2?um:BASE.concat(um);
+  this._samples=fp(this._modes);this._hash=fnv(this._samples);
+  this._field=forceField(this._modes,64);
+};
+
+EDNA.prototype.showSeal=function(c,o){
+  o=o||{};var sz=o.size||48,el=typeof c==="string"?document.querySelector(c):c;
+  if(!el)return this;var self=this;
+  function rn(){var r=self._e.analyze(),sc=Math.round(r.confidence*100),rd=sz*.38,ci=2*Math.PI*rd,
+    of2=ci*(1-sc/100),co=sc>=99?"#4ADE80":"#D4A843";
+    el.innerHTML='<a href="https://github.com/sebklaey/EDNA" target="_blank" rel="noopener" '+
+      'style="display:inline-flex;align-items:center;gap:'+sz*.2+'px;background:rgba(10,10,15,.8);'+
+      'border:1px solid rgba(212,168,67,.15);border-radius:'+(sz/2+20)+'px;padding:'+sz*.12+'px '+sz*.3+'px '+sz*.12+'px '+sz*.15+
+      'px;text-decoration:none;font-family:-apple-system,sans-serif"><svg viewBox="0 0 '+sz+' '+sz+'" width="'+sz+'" height="'+sz+
+      '"><circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+rd+'" fill="none" stroke="rgba(212,168,67,.1)" stroke-width="2"/>'+
+      '<circle cx="'+sz/2+'" cy="'+sz/2+'" r="'+rd+'" fill="none" stroke="'+co+'" stroke-width="2" stroke-linecap="round"'+
+      ' stroke-dasharray="'+ci+'" stroke-dashoffset="'+of2+'" transform="rotate(-90 '+sz/2+' '+sz/2+')"/>'+
+      '<text x="'+sz/2+'" y="'+(sz/2+1)+'" text-anchor="middle" dominant-baseline="middle"'+
+      ' style="font-size:'+sz*.28+'px;fill:'+co+';font-weight:700">'+sc+'</text></svg>'+
+      '<div><div style="font-size:'+sz*.2+'px;font-weight:600;color:#ccc;letter-spacing:.5px">Human Proof</div>'+
+      '<div style="font-size:'+sz*.16+'px;color:#666">by <span style="color:#D4A843;font-weight:600">@sebklaey</span> standard</div></div></a>'}
+  rn();this._si=setInterval(rn,1000);return this;
+};
+
+EDNA.prototype.onBotDetected=function(cb){var self=this;
+  setInterval(function(){var r=self._e.analyze();if(r.classification==="bot"||r.classification==="likely_bot")cb(r)},1000);return this};
+
+// — Static —
+EDNA.compare=function(a,b){return{match:sim(a,b)>.85,confidence:sim(a,b)}};
+EDNA.chladni=chladni;
+EDNA.forceField=forceField;
+EDNA.VERSION="2.0.0";
+
+return EDNA;
+});
