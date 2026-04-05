@@ -176,7 +176,10 @@ I don't need your money. I need the world to know this exists.
 
 ## License
 
-**EAL-1.0** (EDNA Attribution License) — Free to use, modify, and distribute. One condition: the Human Proof Seal must be visibly displayed in your product. [Read the full license →](LICENSE)
+EDNA-1 Proprietary Commercial & Acquisition License (EPCAL-1.0)
+Version 1.0, April 2026
+Copyright (c) 2026 Sebastian Kläy (@sebklaey)
+All Rights Reserved. [Read the full license →](LICENSE)
 
 ## Author
 
