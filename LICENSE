@@ -1,31 +1,34 @@
-EDNA-1 Commercial & Proprietary License (ECP-1.0)
+EDNA-1 Proprietary Commercial & Acquisition License (EPCAL-1.0)
 Version 1.0, April 2026
 Copyright (c) 2026 Sebastian Kläy (@sebklaey)
 All Rights Reserved.
 
-1. OWNERSHIP AND COPYRIGHT
-The EDNA-1 Software, including but not limited to source code, algorithms, behavioral signal logic, and documentation (the "Software"), is the exclusive intellectual property of Sebastian Kläy (the "Licensor"). The Software is protected by international copyright laws and treaties.
+1. OWNERSHIP AND INTELLECTUAL PROPERTY
+The EDNA-1 Software, including but not limited to the source code, detection algorithms, neural analysis weights, behavioral signal logic, "Human Proof Seal" design, and all associated documentation (collectively, the "Software"), is the exclusive intellectual property of Sebastian Kläy (the "Licensor"). This Software is protected by international copyright, patent, and trade secret laws.
 
-2. LIMITED EVALUATION LICENSE
-The Licensor hereby grants you a personal, non-exclusive, non-transferable, and non-sublicensable right to download and view the source code for evaluation and educational purposes only. This license does NOT grant any rights to:
-(a) Deploy the Software in a production environment.
-(b) Use the Software for any commercial gain or within a corporate entity.
-(c) Modify, merge, or create derivative works for public distribution.
+2. LICENSE GRANT & RESTRICTIONS
+The Licensor hereby grants you a limited, non-exclusive, non-transferable, and revocable license to download and view the Software for strictly non-commercial, educational, and evaluation purposes only.
+Prohibited Actions:
+Commercial Use: You may NOT use the Software in any production environment, commercial product, internal business tool, or for-profit service.
+Sub-licensing: You may NOT rent, lease, lend, sell, redistribute, or sub-license the Software.
+Derivative Works: You may NOT modify the Software to create a competing bot-detection or identity-verification product.
+Attribution Removal: The "Human Proof Seal" and all copyright notices must remain intact during evaluation.
 
-3. PROHIBITION OF COMMERCIAL USE
-Any use of the Software in a commercial product, service, or internal business process is strictly prohibited without a separate, written Commercial License Agreement signed by the Licensor. This includes, but is not limited to, use in fintech platforms, cryptocurrency exchanges, social media networks, or any system requiring bot detection or sybil resistance.
+3. COMMERCIAL LICENSING & ENTERPRISE DEPLOYMENT
+Any use of the Software by a legal entity (Corporation, LLC, DAO, etc.) or for any revenue-generating activity requires a separate, written Commercial License Agreement signed by the Licensor.
+Fees for commercial use are determined solely by the Licensor.
+Unauthorized commercial deployment constitutes a material breach of this license and will be subject to statutory damages and immediate injunctive relief.
 
-4. RESTRICTIONS ON TRANSFER AND SALE
-You may not rent, lease, lend, sell, redistribute, or sublicense the Software to any third party. The right to sell, license, or transfer the underlying technology and intellectual property is reserved exclusively for Sebastian Kläy.
+4. INTENT FOR ACQUISITION (ASSET PURCHASE)
+The Software is developed as a "Ready-to-Acquire" technology asset. The Licensor reserves the exclusive right to sell, transfer, or assign the full Intellectual Property (IP) rights of the Software to a third party (the "Acquirer").
+In the event of an Asset Purchase Agreement, the Acquirer shall receive full exclusivity, and all existing evaluation licenses may be terminated at the Licensor’s or Acquirer’s discretion.
+Interested parties should contact the Licensor directly for a Confidential Disclosure Agreement (CDA) to discuss acquisition terms.
 
-5. ACQUISITION AND BUY-OUT PROVISION
-The Software and all associated Intellectual Property (IP) are available for acquisition. Any transfer of full ownership (e.g., to Coinbase, Inc.) requires a formal Asset Purchase Agreement. Upon such an agreement, this license may be superseded by the terms of the acquisition.
+5. TRADE SECRETS & REVERSE ENGINEERING
+The specific weighting of the 16 behavioral signals and the consensus logic within EDNA-1 are considered Trade Secrets. You shall not attempt to decompile, reverse engineer, or circumvent the logic to create a "bypass" for the human-verification engine.
 
-6. MANDATORY ATTRIBUTION (NON-COMMERCIAL ONLY)
-If granted specific permission for non-commercial use, the "EDNA-1 Human Proof Seal" must remain visible as per the original design specifications. Removal of the Seal without a commercial waiver constitutes a breach of contract.
+6. TERMINATION
+This license is effective until terminated. Your rights under this license will terminate automatically without notice if you fail to comply with any term(s) of this license. Upon termination, you must cease all use of the Software and destroy all copies.
 
-7. TERMINATION
-This license terminates automatically if you fail to comply with any of its terms. Upon termination, you must destroy all copies of the Software in your possession.
-
-8. NO WARRANTY & LIMITATION OF LIABILITY
-[Standard Disclaimer: THE SOFTWARE IS PROVIDED "AS IS"... (wie in deinem Entwurf)]
+7. DISCLAIMER OF WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE LICENSOR BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY.
